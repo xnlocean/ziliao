@@ -16,7 +16,7 @@ const PORT = process.env.PORT && Number(process.env.PORT)
 
 const WebpackConfig = merge(baseWebpackConfig, {
     mode:'production',
-    devtool: config.dev.devtool,
+    devtool: config.build.productionSourceMap ? '#source-map' : false,
     plugins: [
         // 编译时配置的全局变量
         new webpack.DefinePlugin({

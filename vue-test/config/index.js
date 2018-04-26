@@ -4,6 +4,7 @@ module.exports = {
     dev: {
         host: 'localhost',
         port: 9090,
+        proxyTable:{},
         autoOpenBrowser: false, //自动启动
         notifyOnErrors: false,
         useEslint: true,
@@ -12,6 +13,9 @@ module.exports = {
         assetsPublicPath:'/',
     },
     build:{
-
+        // 构建环境
+        env:require('./prod.env'),
+        // 是否开启 cssSourceMap
+        productionSourceMap: true,
     }
 }

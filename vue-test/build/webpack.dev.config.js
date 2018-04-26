@@ -4,7 +4,6 @@ const config = require('../config')
 const webpack = require('webpack')
 const baseWebpackConfig = require('./webpack.base.config')
 const htmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
@@ -34,7 +33,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         inline:true,
         quiet: true,
         progress:true,
-        open: config.dev.autoOpenBrowser
+        open: config.dev.autoOpenBrowser,
+        proxy: config.dev.proxyTable
     },
     plugins: [
         // 编译时配置的全局变量
