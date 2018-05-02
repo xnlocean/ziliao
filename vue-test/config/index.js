@@ -11,6 +11,7 @@ module.exports = {
         cssSourceMap: false,
         devtool: 'eval-source-map',
         assetsPublicPath:'/',
+        showEslintErrorsInOverlay: false,
     },
     build:{
         // 构建环境

@@ -1,1 +1,0 @@
-export const text = "在学校的"

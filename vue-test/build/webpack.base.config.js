@@ -1,11 +1,17 @@
-const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require('path')
+const { VueLoaderPlugin } = require('vue-loader')
+const config = require('../config')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+
+function resolve (dir) {
+    return path.join(__dirname, '..', dir)
+}
 
 module.exports = {
     //entry为入口，webpack从这里开始编译
     entry: [
         'babel-polyfill',
-        path.resolve(__dirname,'../src/index.js')
+        path.resolve(__dirname,'../src/main.js')
     ], 
     //output为输出 path代表路径 filename代表文件名称
     output: {
@@ -13,13 +19,32 @@ module.exports = {
         filename:'js/bundle.[hash:8].js',
         chunkFilename: 'js/[name].[chunkhash:8].js'
     },
+    resolve: {
+        alias: {
+            vue: 'vue/dist/vue.js',
+        }
+    },
     plugins: [
         new ExtractTextPlugin({
             filename: 'css/index.[hash:8].css'
         }),
+        new VueLoaderPlugin()
     ],
     module:{
         rules: [
+            {
+                test: /\.vue$/, 
+                loader: 'vue-loader'
+            },
+            {
+                test: /\.(js|vue)$/,
+                loader: 'eslint-loader',
+                enforce: 'pre',
+                include: [resolve('src'), resolve('test')],
+                options: {
+                  formatter: require('eslint-friendly-formatter')
+                }
+            },
             {
                 test: /\.less$/,
                 use: ExtractTextPlugin.extract({
@@ -35,7 +60,7 @@ module.exports = {
             },
             {
                 test:/\.css$/,
-                use: ['style-loader', 'css-loader', 'postcss-loader', 'less-loader']
+                use: ['vue-style-loader', 'style-loader', 'css-loader', 'postcss-loader', 'less-loader']
             },
             {
                 test: /\.(png|jpg|gif)$/,

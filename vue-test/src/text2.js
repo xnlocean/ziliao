@@ -1,1 +1,0 @@
-export const text2 = "写东西"
