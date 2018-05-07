@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "koa-body": "^2.5.0",
+    "koa-static": "^4.0.2",
     "mongoose": "^5.0.16",
     "monk": "^6.0.5"
   },

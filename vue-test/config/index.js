@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
     dev: {
         host: 'localhost',
-        port: 9090,
+        port: 9070,
         proxyTable:{},
         autoOpenBrowser: false, //自动启动
         notifyOnErrors: false,

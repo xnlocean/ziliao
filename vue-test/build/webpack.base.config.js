@@ -20,8 +20,10 @@ module.exports = {
         chunkFilename: 'js/[name].[chunkhash:8].js'
     },
     resolve: {
+        extensions: ['.js', '.vue', '.json'],
         alias: {
-            vue: 'vue/dist/vue.js',
+        vue$: 'vue/dist/vue.js',
+        '@': resolve('src')
         }
     },
     plugins: [

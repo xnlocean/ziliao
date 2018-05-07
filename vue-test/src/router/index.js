@@ -2,16 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 // 懒加载
-// const _import = require('./_import_' + process.env.NODE_ENV)
-
+const _import = require('./_import_' + process.env.NODE_ENV)
 Vue.use(VueRouter)
 
-const Foo = { template: '<div>foo</div>' }
-const Bar = { template: '<div>bar</div>' }
-
 const routes = [
-  { path: '/foo', component: Foo },
-  { path: '/bar', component: Bar }
+  { path: '/login', components: _import('login/index') }
 ]
 
 export default new VueRouter({

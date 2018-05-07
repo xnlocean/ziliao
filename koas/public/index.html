@@ -1,12 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
-    <a href="/search?keywords=海阔天空">搜索</a>
+    <p onclick="loadXMLDoc()">刷新</p>
+    <div>
+        <form action="/add" method="POST">
+            <p>name <input id="name" name="name" type="text"></p>
+            <p>article <input id="article" name="article" type="text"></p>
+            <button type="submit">新增</button>
+        </form>
+    </div>
+    <div id="myDiv">
+        <table id = "tables">
+
+        </table>
+    </div>
 </body>
+<script>
+    function loadXMLDoc() {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        }
+        else {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var data = JSON.parse(xmlhttp.responseText)
+                var html = `<tr><th>_id</th><th>name</th><th>article</th><th>delete</th></tr>`
+                for(var i = 0; i<data.length;i++){
+                    html += "<tr><td>"+data[i]._id+"</td><td>"+data[i].name+"</td><td>"+data[i].article+"</td><td onclick='deletes(\""+data[i]._id+"\")'>删除</td></tr>"
+                }
+                document.getElementById("tables").innerHTML = html;
+            }
+        }
+        xmlhttp.open("GET", "/search", true);
+        xmlhttp.send();
+    }
+    function deletes(val){
+        var xmlhttp;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        }
+        else {// code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                alert(xmlhttp.responseText)
+            }
+        }
+        xmlhttp.open("POST", "/remove", true);
+        xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        xmlhttp.send("_id="+ val);
+    }
+    // function addArticle(){
+    //     var name = document.getElementById('name').value
+    //     var article = document.getElementById('article').value
+    //     var xmlhttps;
+    //     if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+    //         xmlhttps = new XMLHttpRequest();
+    //     }
+    //     else {// code for IE6, IE5
+    //         xmlhttps = new ActiveXObject("Microsoft.XMLHTTP");
+    //     }
+    //     xmlhttps.onreadystatechange = function () {
+    //         if (xmlhttps.readyState == 4 && xmlhttps.status == 200) {
+    //             document.getElementById("myDiv").innerHTML = xmlhttps.responseText;
+    //         }
+    //     }
+    //     xmlhttps.open("POST", "/add", true);
+    //     xmlhttps.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    //     xmlhttps.send("name="+name+"&lname="+article);
+    // }
+</script>
+
 </html>
