@@ -11,7 +11,7 @@
 <body>
     <p onclick="loadXMLDoc()">刷新</p>
     <div>
-        <form action="/add" method="POST">
+        <form action="/article/add" method="POST">
             <p>name <input id="name" name="name" type="text"></p>
             <p>article <input id="article" name="article" type="text"></p>
             <button type="submit">新增</button>
@@ -36,13 +36,13 @@
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 var data = JSON.parse(xmlhttp.responseText)
                 var html = `<tr><th>_id</th><th>name</th><th>article</th><th>delete</th></tr>`
-                for(var i = 0; i<data.length;i++){
-                    html += "<tr><td>"+data[i]._id+"</td><td>"+data[i].name+"</td><td>"+data[i].article+"</td><td onclick='deletes(\""+data[i]._id+"\")'>删除</td></tr>"
+                for(var i = 0; i<data.data.length;i++){
+                    html += "<tr><td>"+data.data[i]._id+"</td><td>"+data.data[i].name+"</td><td>"+data.data[i].article+"</td><td onclick='deletes(\""+data.data[i]._id+"\")'>删除</td></tr>"
                 }
                 document.getElementById("tables").innerHTML = html;
             }
         }
-        xmlhttp.open("GET", "/search", true);
+        xmlhttp.open("GET", "/article/search", true);
         xmlhttp.send();
     }
     function deletes(val){
@@ -58,7 +58,7 @@
                 alert(xmlhttp.responseText)
             }
         }
-        xmlhttp.open("POST", "/remove", true);
+        xmlhttp.open("POST", "/article/remove", true);
         xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         xmlhttp.send("_id="+ val);
     }
