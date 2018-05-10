@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "big-integer": "^1.6.28",
     "koa-body": "^2.5.0",
+    "koa-proxy": "^0.9.0",
     "koa-static": "^4.0.2",
     "mongoose": "^5.0.16",
     "monk": "^6.0.5"

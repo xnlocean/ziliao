@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>跟随鼠标</title>
+	</head>
+	<body>
+		<canvas id="canvas" width="500" height="500" style="background: #ccc;">
+			you browser not support canvas
+		</canvas>
+		<script type="text/javascript" src="../../js/utils.js" ></script>
+		<script type="text/javascript" src="arrow.js" ></script>
+		<script>
+			window.onload = function(){
+				const canvas = document.getElementById('canvas');
+				const context = canvas.getContext('2d');
+				const centerX = canvas.width/2;
+				const centerY = canvas.height/2;
+				const mouse = utils.captureMouse(canvas);
+				const arrow = new Arrow();
+				const arrow2 = new Arrow();
+				arrow2.x = centerX - 100;
+				arrow2.y = centerY - 100;
+				arrow.x = centerX;
+				arrow.y = centerY;
+				(function drawFrame(){
+					window.requestAnimationFrame(drawFrame,canvas);
+					context.clearRect(0,0,canvas.width,canvas.height);
+					const dx = mouse.x - arrow.x,
+					dy = mouse.y - arrow.y;
+					const dx1 = mouse.x -arrow2.y,
+					dy1 = mouse.y - arrow2.y;
+					arrow.rotation = Math.atan2(dy, dx);
+					arrow2.rotation = Math.atan2(dy1,dx1);
+					arrow.draw(context)
+					arrow2.draw(context)
+				})()
+			}
+		</script>
+	</body>
+</html>
