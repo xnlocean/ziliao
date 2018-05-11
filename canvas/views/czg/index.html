@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>根的xjb需求</title>
+	</head>
+	<body>
+		<canvas id="canvas" width="360" height="300"></canvas>
+		<div>
+		    <button onclick="addRandomCircle(12,true)">添加圆圈</button>
+		    <button onclick="clearCanvas()">清空画布</button>
+	  	</div>
+		<script>
+			function box(x,y,radius,color,texts){
+					this.x = x;
+					this.y = y;
+					this.radius = radius;
+					this.color = color;
+					this.texts = texts;
+					this.isSelected = false;
+					this.isChiled = false;
+				}
+			
+			var circles = [];
+			var canvas,ctx;
+			var texts = 0;
+			var returns;
+			function testCzg(){
+				ctx.save();
+				ctx.fillStyle = "#F47C7C";
+		        ctx.font = "40px Arial";
+		        ctx.textAlign = "center";
+		        ctx.textBaseline = "middle";
+		        ctx.fillText('根的xjb需求',canvas.width/2,canvas.height/2);
+		        ctx.restore();
+			}
+			window.onload = function(){
+				canvas = document.getElementById('canvas');
+				ctx = canvas.getContext('2d');
+				testCzg();
+				canvas.onmousedown = onMouseMove;
+			};
+			
+			var month = 12;
+			function addRandomCircle(Nums, isFalse){
+				circles = [];
+				var radius = 20;
+				var x = 0,y = radius;
+				var centerX = canvas.width,
+					centerY = canvas.height;
+				var texts = 0;
+				var color = "green";
+				for(var j = 0;j<Nums;j++){
+					texts = texts + 1
+					if(x + 3 * radius > centerX){
+//						x = 0
+						x = radius * 2
+						y = y + 2 * radius
+						var circle = new box(x,y,radius,color,texts);
+					}else{						
+						x = x + radius * 2	
+						var circle = new box(x,y,radius,color,texts);
+					}
+				circle.isChiled = isFalse;
+				circles.push(circle);
+				}
+				drawCircles();
+			}
+			
+			function clearCanvas(){
+				circles = [];
+				drawCircles();
+			}
+			function drawCircles(){
+				ctx.clearRect(0,0,canvas.width,canvas.height);
+				for(var i = 0; i<circles.length; i++){
+					var circle = circles[i];
+					
+					ctx.globalAlpha = 0.85;
+					ctx.beginPath();
+					ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI*2);
+					ctx.fillStyle = circle.color;
+					ctx.strokeStyle = "black";
+					
+					ctx.fill();
+					ctx.stroke();
+					drawToolTip(circle.texts,circle.x,circle.y)
+				}
+			}
+		function drawToolTip(txtLoc, x, y) {
+	        ctx.save();
+	        var padding = 0;
+	        var font = "16px arial";
+	        ctx.font = font;
+//	        ctx.textBaseline = 'bottom';
+//	        ctx.fillStyle = 'yellow';
+//	        ctx.fillStyle = "#F47C7C";
+//	        ctx.font = "40px Arial";
+	        ctx.textAlign = "center";
+	        ctx.textBaseline = "middle";
+	        //绘制ToolTip背景
+//	        var width = ctx.measureText(txtLoc).width;
+//	        var height = parseInt(font, 10);
+//	        ctx.fillRect(x, y-height, width+padding*2, height+padding*2);
+	 
+	        //绘制ToolTip文字
+	        ctx.fillStyle = '#000';
+	        ctx.fillText(txtLoc, x+padding, y+padding);
+	 
+	        ctx.restore();
+	    }
+			//当前选中的圆圈
+    var previousSelectedCircle;
+ 
+    //鼠标点击事件
+    function onMouseMove(e) {
+      // 清除之前选择的圆圈
+      if (previousSelectedCircle != null) {
+        previousSelectedCircle.isSelected = false;
+        previousSelectedCircle = null;
+      }
+ 
+      // 取得画布上被单击的点
+      var clickX = e.pageX - canvas.offsetLeft;
+      var clickY = e.pageY - canvas.offsetTop;
+ 
+      // 查找被单击的圆圈
+      for(var i=circles.length-1; i>=0; i--) {
+        var circle = circles[i];
+        //使用勾股定理计算这个点与圆心之间的距离
+        var distanceFromCenter = Math.sqrt(Math.pow(circle.x - clickX, 2)
+            + Math.pow(circle.y - clickY, 2))
+        // 判断这个点是否在圆圈中
+        if (distanceFromCenter <= circle.radius) {
+          previousSelectedCircle = circle;
+ 
+          //选择新圆圈
+          circle.isSelected = true;
+ 
+          //停止搜索
+          break;
+        }
+      }
+ 
+      //更新显示，重绘圆圈
+      drawCircles();
+      //如果当前鼠标位置有圆圈，还要显示tip
+      if(previousSelectedCircle != null){
+//      drawToolTip("颜色：" + previousSelectedCircle.color, clickX, clickY);
+		if(previousSelectedCircle.isChiled === true){
+			returns =previousSelectedCircle.texts + '-';
+			addRandomCircle(31,false)			
+		}else{
+			alert(returns+ previousSelectedCircle.texts)
+		}
+      }
+    }
+		</script>
+	</body>
+</html>
