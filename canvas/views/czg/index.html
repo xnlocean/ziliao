@@ -39,27 +39,42 @@
 				ctx = canvas.getContext('2d');
 				testCzg();
 				canvas.onmousedown = onMouseMove;
+				
+				var angle = 0,
+	                range = 0.5,
+	                speed = 0.05,
+	                centerScale = 1;
+				(function drawFram(){
+					window.requestAnimationFrame(drawFram, canvas);
+					
+    			})()
 			};
 			
 			var month = 12;
 			function addRandomCircle(Nums, isFalse){
 				circles = [];
 				var radius = 20;
-				var x = 0,y = radius;
+				var x = 0,y = 2 * radius;
 				var centerX = canvas.width,
 					centerY = canvas.height;
 				var texts = 0;
-				var color = "green";
+				var color = [
+				  '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5',
+				  '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50',
+				  '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800',
+				  '#FF5722'
+				  ];
 				for(var j = 0;j<Nums;j++){
 					texts = texts + 1
-					if(x + 3 * radius > centerX){
+					var nums = Math.round(Math.random() * 16)
+					if(x + 3 * radius + 10 > centerX){
 //						x = 0
-						x = radius * 2
-						y = y + 2 * radius
-						var circle = new box(x,y,radius,color,texts);
+						x = radius * 2 + 10 
+						y = y + 2 * radius + 10
+						var circle = new box(x,y,radius,color[nums],texts);
 					}else{						
-						x = x + radius * 2	
-						var circle = new box(x,y,radius,color,texts);
+						x = x + radius * 2 + 10
+						var circle = new box(x,y,radius,color[nums],texts);
 					}
 				circle.isChiled = isFalse;
 				circles.push(circle);
@@ -75,15 +90,15 @@
 				ctx.clearRect(0,0,canvas.width,canvas.height);
 				for(var i = 0; i<circles.length; i++){
 					var circle = circles[i];
-					
 					ctx.globalAlpha = 0.85;
 					ctx.beginPath();
 					ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI*2);
 					ctx.fillStyle = circle.color;
-					ctx.strokeStyle = "black";
-					
+					ctx.scale(circle.scaleX,circle.scaleY)
+//					ctx.strokeStyle = "black";
+					ctx.closePath();
 					ctx.fill();
-					ctx.stroke();
+//					ctx.stroke();
 					drawToolTip(circle.texts,circle.x,circle.y)
 				}
 			}
@@ -155,6 +170,7 @@
 		}
       }
     }
+    
 		</script>
 	</body>
 </html>

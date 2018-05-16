@@ -43,6 +43,7 @@
     "webpack-merge": "^4.1.2"
   },
   "scripts": {
+    "dll": "npx webpack --config build/webpack.dll.config.js --mode production",
     "dev": "npx webpack-dev-server --config build/webpack.dev.config.js",
     "build": "npx webpack --config build/webpack.prod.config.js"
   },

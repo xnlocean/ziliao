@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>根的xjb需求1.0</title>
+	</head>
+
+	<body>
+		<canvas id="canvas" width="360" height="300"></canvas>
+	</body>
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/ball.js"></script>
+	<script>
+		var ball;
+		var numMoth = 12;
+		var mothArry = [31,29,31,30,31,30,31,31,30,31,30,31]
+		function onloadings(numMoth , isFalse) {
+			var canvas = document.getElementById('canvas');
+			var context = canvas.getContext('2d');
+			ball = [];
+			var angle = 0,
+				range = 0.1,
+				speed = 0.05,
+				centerScale = 1,
+				radius = 20,
+				x = 0,
+				y = 2 * radius,
+				num = numMoth;
+			var color = [
+				  '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5',
+				  '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50',
+				  '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800',
+				  '#FF5722'
+				  ];
+			for(var i = 0;i<num;i++){
+				var nums = Math.round(Math.random() * 16)
+				ball[i] = new Ball(radius,color[nums]);
+				if(x + 3 * radius + 10 > canvas.width){
+					x = radius * 2 + 10 
+					y = y + 2 * radius + 10
+					ball[i].x = x;
+					ball[i].y = y;
+				}else{
+					x = x + radius * 2 + 10
+					ball[i].x = x;
+					ball[i].y = y;
+				}
+				ball[i].isChiled = isFalse
+			}
+
+			canvas.onmousedown = onMouseMove;
+			
+			const mouse = utils.captureMouse(canvas);
+			(function drawFrame() {
+				window.requestAnimationFrame(drawFrame, canvas);
+				context.clearRect(0, 0, canvas.width, canvas.height);
+				//sin值的变化，导致 ball.scaleX ， ball.scaleY属性变化
+				angle += speed;
+				for(var j = 0;j<ball.length;j++){
+					ball[j].textNum = j + 1;
+					//缩放
+					ball[j].scaleX = ball[j].scaleY = centerScale + Math.cos(angle-j) * range;
+					
+					ball[j].draw(context);
+					ball[j].tests(context)
+				}
+			})();
+		}
+		window.onload = onloadings(numMoth,true);
+		//当前选中的圆圈
+		var previousSelectedCircle;
+		//鼠标点击事件
+		function onMouseMove(e) {
+			// 清除之前选择的圆圈
+			if(previousSelectedCircle != null) {
+				previousSelectedCircle.isSelected = false;
+				previousSelectedCircle = null;
+			}
+			// 取得画布上被单击的点
+			var clickX = e.pageX - canvas.offsetLeft;
+			var clickY = e.pageY - canvas.offsetTop;
+			// 查找被单击的圆圈
+			for(var i = ball.length - 1; i >= 0; i--) {
+				var circle = ball[i];
+				//使用勾股定理计算这个点与圆心之间的距离
+				var distanceFromCenter = Math.sqrt(Math.pow(circle.x - clickX, 2) +
+					Math.pow(circle.y - clickY, 2))
+				// 判断这个点是否在圆圈中
+				if(distanceFromCenter <= circle.radius) {
+					previousSelectedCircle = circle;
+					//选择新圆圈
+					circle.isSelected = true;
+					//停止搜索
+					break;
+				}
+			}
+			//如果当前鼠标位置有圆圈，还要显示tip
+			if(previousSelectedCircle != null) {
+				//      drawToolTip("颜色：" + previousSelectedCircle.color, clickX, clickY);
+				if(previousSelectedCircle.isChiled === true) {
+					console.log(mothArry[previousSelectedCircle.textNum - 1])
+					returns = previousSelectedCircle.textNum + '-';
+					onloadings(mothArry[previousSelectedCircle.textNum - 1],false)
+				} else {
+					alert(returns + previousSelectedCircle.textNum)
+				}
+			}
+		}
+	</script>
+
+</html>

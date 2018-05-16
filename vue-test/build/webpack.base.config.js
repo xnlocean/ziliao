@@ -2,7 +2,7 @@ const path = require('path')
 const { VueLoaderPlugin } = require('vue-loader')
 const config = require('../config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 function resolve (dir) {
     return path.join(__dirname, '..', dir)
 }
@@ -69,7 +69,8 @@ module.exports = {
                 use: [{
                     loader: 'url-loader',
                     options: {
-                        limit: 8192 //8k一下的转义为base64
+                        limit: 8192, //8k一下的转义为base64
+                        outputPath: 'images/'
                     }
                 }]
             }

@@ -18,6 +18,10 @@ const WebpackConfig = merge(baseWebpackConfig, {
     mode:'production',
     devtool: config.build.productionSourceMap ? '#source-map' : false,
     plugins: [
+
+        new webpack.DllReferencePlugin({
+            manifest: require(path.resolve(__dirname, '../dist','vue.manifest.json'))
+        }),
         // 编译时配置的全局变量
         new webpack.DefinePlugin({
             'process.env': require('../config/prod.env')

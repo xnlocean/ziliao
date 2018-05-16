@@ -1,8 +1,12 @@
 <template>
-  <div>11111</div>
+  <div>
+    <CanvasBg></CanvasBg>
+  </div>
 </template>
 
 <script>
+import CanvasBg from './components/canvas/index'
+
 export default {
   data() {
     return {
@@ -11,6 +15,9 @@ export default {
         password: ''
       }
     }
+  },
+  components: {
+    CanvasBg
   }
 }
 </script>
