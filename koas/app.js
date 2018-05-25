@@ -11,7 +11,7 @@ const app = new Koa()
 const routers = require('./router/all')
 app.use(koaBody({multipart: true}))
 
-app.use(require('koa-static')(__dirname + '/public'));
+app.use(require('koa-static')(__dirname + '/dist'));
 app.use(routers.routes())
 app.use(routers.allowedMethods());
 const port = process.env.PORT || 3001;

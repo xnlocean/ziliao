@@ -3,6 +3,9 @@ const { VueLoaderPlugin } = require('vue-loader')
 const config = require('../config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const lessExtract = new ExtractTextPlugin('css/less.css');
+let BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 function resolve (dir) {
     return path.join(__dirname, '..', dir)
 }
@@ -17,7 +20,10 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, '../dist'),
         filename:'js/bundle.[hash:8].js',
-        chunkFilename: 'js/[name].[chunkhash:8].js'
+        chunkFilename: 'js/[name].[chunkhash:8].js',
+        publicPath: process.env.NODE_ENV === 'production'
+                ? config.build.assetsPublicPath
+                : config.dev.assetsPublicPath
     },
     resolve: {
         extensions: ['.js', '.vue', '.json'],
@@ -30,7 +36,8 @@ module.exports = {
         new ExtractTextPlugin({
             filename: 'css/index.[hash:8].css'
         }),
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        // new BundleAnalyzerPlugin()
     ],
     module:{
         rules: [
@@ -49,10 +56,14 @@ module.exports = {
             },
             {
                 test: /\.less$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: ['css-loader', 'postcss-loader', 'less-loader']
+                use:lessExtract.extract({
+                    fallback:'style-loader',
+                    use: ['css-loader','less-loader']
                 })
+                // use: ExtractTextPlugin.extract({
+                //     fallback: "style-loader",
+                //     use: ['css-loader', 'less-loader']
+                // })
             },
             {
                 test: /\.js$/,
@@ -62,7 +73,11 @@ module.exports = {
             },
             {
                 test:/\.css$/,
-                use: ['vue-style-loader', 'style-loader', 'css-loader', 'postcss-loader', 'less-loader']
+                // loader:['style-loader','css-loader']
+                use:ExtractTextPlugin.extract({
+                    use:['css-loader']
+                })//不再需要style-loader
+
             },
             {
                 test: /\.(png|jpg|gif)$/,
@@ -73,6 +88,10 @@ module.exports = {
                         outputPath: 'images/'
                     }
                 }]
+            },
+            { 
+                test: /.(eot|woff|ttf)$/, 
+                loader: 'url-loader' 
             }
         ]
     },
