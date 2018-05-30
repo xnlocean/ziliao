@@ -2,8 +2,9 @@ const path = require('path')
 const { VueLoaderPlugin } = require('vue-loader')
 const config = require('../config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const cssExtract = new ExtractTextPlugin({filename: 'css/index.[hash:8].css'})
+const lessExtract = new ExtractTextPlugin('css/less.[hash:8].css');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const lessExtract = new ExtractTextPlugin('css/less.css');
 let BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 function resolve (dir) {
@@ -18,12 +19,9 @@ module.exports = {
     ], 
     //output为输出 path代表路径 filename代表文件名称
     output: {
-        path: path.resolve(__dirname, '../dist'),
+        path: path.resolve(__dirname, './dist'),
         filename:'js/bundle.[hash:8].js',
-        chunkFilename: 'js/[name].[chunkhash:8].js',
-        publicPath: process.env.NODE_ENV === 'production'
-                ? config.build.assetsPublicPath
-                : config.dev.assetsPublicPath
+        chunkFilename: 'js/[name].[chunkhash:8].js'
     },
     resolve: {
         extensions: ['.js', '.vue', '.json'],
@@ -33,10 +31,9 @@ module.exports = {
         }
     },
     plugins: [
-        new ExtractTextPlugin({
-            filename: 'css/index.[hash:8].css'
-        }),
+        cssExtract,
         new VueLoaderPlugin(),
+        lessExtract
         // new BundleAnalyzerPlugin()
     ],
     module:{
@@ -60,10 +57,6 @@ module.exports = {
                     fallback:'style-loader',
                     use: ['css-loader','less-loader']
                 })
-                // use: ExtractTextPlugin.extract({
-                //     fallback: "style-loader",
-                //     use: ['css-loader', 'less-loader']
-                // })
             },
             {
                 test: /\.js$/,
@@ -74,8 +67,9 @@ module.exports = {
             {
                 test:/\.css$/,
                 // loader:['style-loader','css-loader']
-                use:ExtractTextPlugin.extract({
-                    use:['css-loader']
+                use:cssExtract.extract({
+                    fallback:'style-loader',
+                    use:'css-loader'
                 })//不再需要style-loader
 
             },

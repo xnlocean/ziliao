@@ -6,7 +6,9 @@
         {
           "libraryName": "element-ui",
           "styleLibraryName": "theme-chalk"
-        }
+        },
+        "dynamic-import-webpack",
+        "syntax-dynamic-import"
       ]
     ]
   }

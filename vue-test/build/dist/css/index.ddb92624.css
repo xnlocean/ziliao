@@ -1,0 +1,11 @@
+
+div #canvas[data-v-25ad3d5d] {
+  display: block;
+  background-color: #000000;
+}
+div #message[data-v-25ad3d5d] {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

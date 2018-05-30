@@ -58,7 +58,17 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  @import './css/canvas.less';
+  div{
+    #canvas{
+        display: block;
+        background-color: #000000
+    }
+    #message{
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%,-50%);    }
+}
 </style>
 
 

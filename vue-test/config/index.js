@@ -18,7 +18,7 @@ module.exports = {
         env:require('./prod.env'),
         // 是否开启 cssSourceMap
         productionSourceMap: false,
-        assetsPublicPath:'',
+        assetsPublicPath:'./',
         devtool: '#source-map',
         assetsSubDirectory: 'static'
     }

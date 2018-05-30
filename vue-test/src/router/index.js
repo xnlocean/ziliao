@@ -6,11 +6,11 @@ const _import = require('./_import_' + process.env.NODE_ENV)
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/login', components: _import('go/index') }
+  { path: '/login', components: _import('login/index') }
 ]
 
 export default new VueRouter({
-  // mode: 'history',
+  mode: 'hash',
   base: __dirname,
   routes
 })

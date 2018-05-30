@@ -7,9 +7,10 @@ const htmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const PrerenderSPAPlugin = require('prerender-spa-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 
 function resolve (dir) {
-    return path.join(__dirname, '../', dir)
+    return path.join(__dirname, '..', dir)
   }
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -18,14 +19,14 @@ const WebpackConfig = merge(baseWebpackConfig, {
     mode:'production',
     devtool: config.build.productionSourceMap ? config.build.devtool : false,
     output: {
-        path: path.resolve(__dirname, '../dist'),
+        path: path.resolve(__dirname, './dist'),
         filename:'js/bundle.[hash:8].js',
         chunkFilename: 'js/[name].[chunkhash:8].js'
       },
     plugins: [
-        // new webpack.DllReferencePlugin({
-        //     manifest: require(path.resolve(__dirname, '../dist','vue.manifest.json'))
-        // }),
+        new webpack.DllReferencePlugin({
+            manifest: require(path.resolve(__dirname, './dist','vue.manifest.json'))
+        }),
         // 编译时配置的全局变量
         new webpack.DefinePlugin({
             'process.env': require('../config/prod.env')
@@ -40,11 +41,14 @@ const WebpackConfig = merge(baseWebpackConfig, {
                 removeAttributeQuotes:true//压缩 去掉引号
             }
         }),
-        new CleanWebpackPlugin(['/dist']), //清理打包文件插件
+        new CleanWebpackPlugin(['dist/js/bundle.*','dist/js/common.*']), //清理打包文件插件
         new PrerenderSPAPlugin({
-            staticDir:path.join(__dirname,'dist'),
+            staticDir:path.join(__dirname,'/dist'),
             routes:['/']
-        })
+        }),
+        new AddAssetHtmlPlugin([{
+            filepath: path.resolve(__dirname,'./dist/*.dll.js')
+          }])
     ]
 })
 

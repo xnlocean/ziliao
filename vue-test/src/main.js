@@ -1,6 +1,6 @@
 import Vue from 'vue'
-// import { Input } from 'element-ui'
-// import 'element-ui/lib/theme-chalk/index.css'
+import { Input } from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
 import './permission'
@@ -10,7 +10,7 @@ import './permission'
 // })
 
 // 按需加载
-// Vue.use(Input)
+Vue.component(Input.name, Input)
 
 new Vue({
   el: '#app',
