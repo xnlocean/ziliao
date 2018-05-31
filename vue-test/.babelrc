@@ -1,14 +1,21 @@
 {
-    "presets": [["es2015", { "modules": false }]],
-    "plugins": [
-      [
-        "component",
-        {
-          "libraryName": "element-ui",
-          "styleLibraryName": "theme-chalk"
-        },
-        "dynamic-import-webpack",
-        "syntax-dynamic-import"
-      ]
-    ]
-  }
+  "presets": [
+    [
+      "env",
+      {
+        "modules": false
+      }
+    ],
+    "stage-2"
+  ],
+  "plugins": [
+    [
+      "component",
+      {
+        "libraryName": "element-ui",
+        "styleLibraryName": "theme-chalk"
+      }
+    ],
+    "syntax-dynamic-import"
+  ]
+}

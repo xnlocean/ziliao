@@ -3,11 +3,11 @@ const merge = require('webpack-merge')
 const config = require('../config')
 const webpack = require('webpack')
 const baseWebpackConfig = require('./webpack.base.config')
-const htmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const PrerenderSPAPlugin = require('prerender-spa-plugin');
+const htmlWebpackPlugin = require('html-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const PrerenderSPAPlugin = require('prerender-spa-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 
 function resolve (dir) {
     return path.join(__dirname, '..', dir)
@@ -25,7 +25,7 @@ const WebpackConfig = merge(baseWebpackConfig, {
       },
     plugins: [
         new webpack.DllReferencePlugin({
-            manifest: require(path.resolve(__dirname, './dist','vue.manifest.json'))
+            manifest: require(path.resolve(__dirname, './dist','vendor.manifest.json'))
         }),
         // 编译时配置的全局变量
         new webpack.DefinePlugin({
@@ -41,7 +41,7 @@ const WebpackConfig = merge(baseWebpackConfig, {
                 removeAttributeQuotes:true//压缩 去掉引号
             }
         }),
-        new CleanWebpackPlugin(['dist/js/bundle.*','dist/js/common.*']), //清理打包文件插件
+        new CleanWebpackPlugin(['dist/js','dist/css']), //清理打包文件插件
         new PrerenderSPAPlugin({
             staticDir:path.join(__dirname,'/dist'),
             routes:['/']

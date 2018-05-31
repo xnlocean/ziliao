@@ -10,7 +10,7 @@ import './permission'
 // })
 
 // 按需加载
-Vue.component(Input.name, Input)
+Vue.use(Input)
 
 new Vue({
   el: '#app',

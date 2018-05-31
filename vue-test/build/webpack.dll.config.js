@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 const webpack = require('webpack')
 
 function resolve (dir) {
@@ -7,7 +7,7 @@ function resolve (dir) {
 
 module.exports = {
     entry: {
-        vue: ['vue', 'vue-router', 'vuex', 'element-ui'] //vue模块打包到一个动态连接库
+        vendor: ['vue-router', 'vuex'] //vue模块打包到一个动态连接库
     },
     devtool: '#source-map',
     output: {

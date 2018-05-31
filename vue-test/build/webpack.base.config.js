@@ -5,7 +5,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const cssExtract = new ExtractTextPlugin({filename: 'css/index.[hash:8].css'})
 const lessExtract = new ExtractTextPlugin('css/less.[hash:8].css');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-let BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const ModuleConcatenationPlugin = require('webpack/lib/optimize/ModuleConcatenationPlugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 function resolve (dir) {
     return path.join(__dirname, '..', dir)
@@ -33,8 +35,10 @@ module.exports = {
     plugins: [
         cssExtract,
         new VueLoaderPlugin(),
-        lessExtract
-        // new BundleAnalyzerPlugin()
+        lessExtract,
+        // new ModuleConcatenationPlugin(),
+        new BundleAnalyzerPlugin(),
+        new UglifyJsPlugin()
     ],
     module:{
         rules: [
@@ -59,10 +63,13 @@ module.exports = {
                 })
             },
             {
-                test: /\.js$/,
-                use: ['babel-loader'],
-                include: path.join(__dirname, 'src'),
-                exclude: /node_modules/
+                test: /\.js/,
+                use: {
+                    loader: 'babel-loader',
+                    query: {
+                        presets: ["env", "stage-0"]
+                    }
+                }
             },
             {
                 test:/\.css$/,
@@ -92,10 +99,13 @@ module.exports = {
     optimization: {
         splitChunks: {
             cacheGroups: {
+                //提取公共代码
                 vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'common',
-                    chunks: 'all'
+                    test: /node_modules/,
+                    chunks: "initial",
+                    name: "vendor",
+                    priority: 10,
+                    enforce: true
                 }
             }
         }
