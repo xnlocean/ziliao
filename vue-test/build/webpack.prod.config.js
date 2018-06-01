@@ -25,7 +25,7 @@ const WebpackConfig = merge(baseWebpackConfig, {
       },
     plugins: [
         new webpack.DllReferencePlugin({
-            manifest: require(path.resolve(__dirname, './dist','vendor.manifest.json'))
+            manifest: require(path.resolve(__dirname, './dist','vue.manifest.json'))
         }),
         // 编译时配置的全局变量
         new webpack.DefinePlugin({

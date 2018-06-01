@@ -2,12 +2,12 @@ const path = require('path')
 const { VueLoaderPlugin } = require('vue-loader')
 const config = require('../config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const cssExtract = new ExtractTextPlugin({filename: 'css/index.[hash:8].css'})
-const lessExtract = new ExtractTextPlugin('css/less.[hash:8].css');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const cssExtract = new ExtractTextPlugin({filename: 'css/index.[hash:8].css',allChunks: true})
+const lessExtract = new ExtractTextPlugin({filename: 'css/less.[hash:8].css',allChunks: true})
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // const ModuleConcatenationPlugin = require('webpack/lib/optimize/ModuleConcatenationPlugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 function resolve (dir) {
     return path.join(__dirname, '..', dir)
@@ -28,17 +28,17 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.vue', '.json'],
         alias: {
-        vue$: 'vue/dist/vue.js',
-        '@': resolve('src')
+            vue$: 'vue/dist/vue.esm.js',
+            '@': resolve('src')
         }
     },
     plugins: [
         cssExtract,
         new VueLoaderPlugin(),
-        lessExtract,
+        lessExtract
         // new ModuleConcatenationPlugin(),
-        new BundleAnalyzerPlugin(),
-        new UglifyJsPlugin()
+        // new BundleAnalyzerPlugin()
+        // new UglifyJsPlugin()
     ],
     module:{
         rules: [
@@ -100,6 +100,12 @@ module.exports = {
         splitChunks: {
             cacheGroups: {
                 //提取公共代码
+                commons: {
+                    chunks: "initial",
+                    minChunks: 2,
+                    maxInitialRequests: 5,
+                    minSize: 0
+                },
                 vendor: {
                     test: /node_modules/,
                     chunks: "initial",
