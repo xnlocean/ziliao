@@ -1,14 +1,14 @@
 export default class shape {
-  constructor(x, y, texte, context, H, W, gridY, gridX, type = 'ball', Particle, colors, utils) {
+  constructor(x, y, texte = '(●_●)', context, H, W, gridY, gridX, type = 'ball', Particle, colors, utils) {
     this.x = x
-    this.y = y
-    this.size = 150
+    this.y = y / 1.2
+    this.size = window.innerWidth < 500 ? 80 : 150
     this.context = context
     this.H = H
     this.W = W
     this.gridY = gridY
     this.gridX = gridX
-    this.text = texte
+    this.text = texte.trim() === '' ? '(●_●)' : texte
     this.type = type
     this.placement = []
     this.Particle = Particle
@@ -37,7 +37,7 @@ export default class shape {
       for (var i = 0; i < W; i += gridX) {
         if (buffer32[j * W + i]) {
           // 配置默认值，半径，重力，周期，速度，颜色
-          var particle = new Particle(i, j, type, utils, 1, 0, 0.2, 0.1, colors, context)
+          var particle = new Particle(i, j, type, utils, 0.5, 0, 0.1, 0.05, colors, context)
           this.placement.push(particle)
         }
       }

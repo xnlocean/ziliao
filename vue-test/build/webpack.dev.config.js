@@ -53,7 +53,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
                 removeAttributeQuotes:true//压缩 去掉引号
             }
         }),
-        new CleanWebpackPlugin(['/dist']) //清理打包文件插件
+        // new CleanWebpackPlugin(['dist/js','dist/css']) //清理打包文件插件
     ]
 })
 

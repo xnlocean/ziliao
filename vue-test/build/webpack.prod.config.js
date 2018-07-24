@@ -24,6 +24,10 @@ const WebpackConfig = merge(baseWebpackConfig, {
         chunkFilename: 'js/[name].[chunkhash:8].js'
       },
     plugins: [
+        new webpack.ProvidePlugin({
+            _:'lodash' //所有页面都会引入 _ 这个变量，不用再import引入
+        }),
+        new FriendlyErrorsPlugin(),
         new webpack.DllReferencePlugin({
             manifest: require(path.resolve(__dirname, './dist','vue.manifest.json'))
         }),

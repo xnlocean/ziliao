@@ -2,8 +2,9 @@ const path = require('path')
 const { VueLoaderPlugin } = require('vue-loader')
 const config = require('../config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const cssExtract = new ExtractTextPlugin({filename: 'css/index.[hash:8].css',allChunks: true})
+// const lessExtract = new ExtractTextPlugin({filename: 'css/less.[hash:8].css',allChunks: true})
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // const ModuleConcatenationPlugin = require('webpack/lib/optimize/ModuleConcatenationPlugin')
 // const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
@@ -31,21 +32,15 @@ module.exports = {
     //     poll:1000 //每秒询问的文件变更的次数
     // },
     resolve: {
-        extensions: ['.js', '.vue', '.json' ,'.less'],
+        extensions: ['.js', '.vue', '.json'],
         alias: {
             vue$: 'vue/dist/vue.esm.js',
             '@': resolve('src')
         }
     },
     plugins: [
-        new ExtractTextPlugin({filename: 'css/[name].[hash:8].css',allChunks: true}),
+        cssExtract,
         new VueLoaderPlugin(),
-        new OptimizeCssAssetsPlugin({
-            assetNameRegExp: /\.optimize\.css$/g,
-            cssProcessor: require('cssnano'),
-            cssProcessorOptions: { discardComments: { removeAll: true } },
-            canPrint: true
-          })
         // lessExtract
         // new ModuleConcatenationPlugin(),
         // new BundleAnalyzerPlugin()
@@ -67,23 +62,18 @@ module.exports = {
                 }
             },
             {
-                test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    use: [{
-                        loader:'css-loader',
-                        options:{
-                            minimize: true //css压缩
-                        }
-                    }] // 不再需要style-loader放到html文件内
-                }),
-                exclude:  path.resolve(__dirname, "src"),
+                test:/\.css$/,
+                // loader:['style-loader','css-loader']
+                use:cssExtract.extract({
+                    use:'css-loader'
+                })//不再需要style-loader
+
             },
             {
-                test:/\.less$/,
-                use: ExtractTextPlugin.extract({
-                    use: ['css-loader', 'less-loader']
-                }),
-                include: path.resolve(__dirname, "../src")
+                test: /\.less$/,
+                use:cssExtract.extract({
+                    use: ['css-loader','less-loader']
+                })
             },
             {
                 test: /\.js/,
@@ -109,25 +99,25 @@ module.exports = {
                 loader: 'url-loader' 
             }
         ]
+    },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                //提取公共代码
+                commons: {
+                    chunks: "initial",
+                    minChunks: 2,
+                    maxInitialRequests: 5,
+                    minSize: 0
+                },
+                vendor: {
+                    test: /node_modules/,
+                    chunks: "initial",
+                    name: "vendor",
+                    priority: 10,
+                    enforce: true
+                }
+            }
+        }
     }
-    // optimization: {
-    //     splitChunks: {
-    //         cacheGroups: {
-    //             //提取公共代码
-    //             commons: {
-    //                 chunks: "initial",
-    //                 minChunks: 2,
-    //                 maxInitialRequests: 5,
-    //                 minSize: 0
-    //             },
-    //             vendor: {
-    //                 test: /node_modules/,
-    //                 chunks: "initial",
-    //                 name: "vendor",
-    //                 priority: 10,
-    //                 enforce: true
-    //             }
-    //         }
-    //     }
-    // }
 }

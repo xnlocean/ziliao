@@ -1,21 +1,14 @@
 {
-  "presets": [
-    [
-      "env",
-      {
-        "modules": false
-      }
-    ],
-    "stage-2"
-  ],
+  "presets": [["env", { "modules": false }]],
   "plugins": [
     [
       "component",
       {
         "libraryName": "element-ui",
         "styleLibraryName": "theme-chalk"
-      }
-    ],
-    "syntax-dynamic-import"
+      },
+      "syntax-dynamic-import",
+      "dynamic-import-webpack"
+    ]
   ]
 }
